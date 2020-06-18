@@ -1,6 +1,8 @@
+import dotenv from "dotenv";
 import express from "express";
 import { AddressInfo } from "net";
 // import { userRouter } from "./router/UserRouter";
+dotenv.config();
 const app = express();
 
 app.use(express.json());
