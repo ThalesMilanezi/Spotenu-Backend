@@ -1,3 +1,5 @@
+import { NotFoundError } from "../errors/NotFoundError"
+
 export class User {
   constructor(
     private id: string,
@@ -6,7 +8,8 @@ export class User {
     private nickname: string,
     private password: string,
     private role: UserRole,
-    private description?: string
+    private description?: string,
+    private isApproved?: boolean
 
   ) { }
 
@@ -35,7 +38,11 @@ export class User {
   }
 
   public getDescription(): string {
-    return this.description
+    return this.description as string
+  }
+
+  public getisApproved(): boolean{
+    return this.isApproved as boolean
   }
 
 }
@@ -46,3 +53,18 @@ export enum UserRole {
   ADMIN = 'ADMIN',
   BAND = 'BAND'
 }
+
+export const stringToUserRole = (input: string): UserRole => {
+  switch (input) {
+    case "FREE":
+      return UserRole.FREE;
+    case "PREMIUM":
+      return UserRole.PREMIUM;
+      case "ADMIN":
+      return UserRole.ADMIN;
+      case "BAND":
+      return UserRole.BAND;
+    default:
+      throw new NotFoundError("The specific user role was not found.");
+  }
+};
