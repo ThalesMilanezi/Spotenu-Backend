@@ -109,7 +109,7 @@ export class UserBusiness {
     const cryptedPassword = await this.hashGenerator.hash(password)
 
     await this.userDataBase.createUser(
-      new User(id, name, email, nickname, cryptedPassword, stringToUserRole(role), description)
+      new User(id, name, email, nickname, cryptedPassword, stringToUserRole(role), isApproved, description )
     )
 
     const acessToken = this.tokenGenerator.generate({
@@ -122,40 +122,38 @@ export class UserBusiness {
     }
   }
 
-  public async login(emailOrNickname: string, password: string) {
-    if (!emailOrNickname || !password) {
+  public async login(userInput: string, password: string) {
+    if (!userInput || !password) {
       throw new InvalidParameterError("Missing inputs, check the requireds inputs and try again!")
     }
 
-    const userEmail = await this.userDataBase.getUserByEmail(emailOrNickname)
-    const userNickname = await this.userDataBase.getUserByNickname(emailOrNickname)
-
-    if (emailOrNickname.indexOf("@")) {
-      const correctPassword = await this.hashGenerator.compareHash(password, userEmail!.getPassword())
+    const user = await this.userDataBase.getUserByEmail(userInput)
+    console.log("Objeto user aqui",user)
+   
+    if (userInput.indexOf("@")) {
+      const correctPassword = await this.hashGenerator.compareHash(password, user!.getPassword())
       if (!correctPassword) {
-        throw new Unauthorized("Some credencials are incorrect")
+        throw new Unauthorized("Some credencials are incorrect 1")
       }
       const acessToken = this.tokenGenerator.generate({
-        id: userEmail!.getId(),
-        role: userEmail!.getRole()
+        id: user!.getId(),
+        role: user!.getRole()
       })
 
       return { acessToken }
 
     } else {
-      const correctPassword = await this.hashGenerator.compareHash(password, userNickname!.getPassword())
+      const correctPassword = await this.hashGenerator.compareHash(password, user!.getPassword())
       if (!correctPassword) {
-        throw new Unauthorized("Some credencials are incorrect")
+        throw new Unauthorized("Some credencials are incorrect 2")
       }
       const acessToken = this.tokenGenerator.generate({
-        id: userNickname!.getId(),
-        role: userNickname!.getRole()
+        id: user!.getId(),
+        role: user!.getRole()
       })
 
       return { acessToken }
+
     }
-
   }
-
-
 }

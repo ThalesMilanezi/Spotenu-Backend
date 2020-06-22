@@ -8,8 +8,8 @@ export class User {
     private nickname: string,
     private password: string,
     private role: UserRole,
-    private description?: string,
-    private isApproved?: boolean
+    private isApproved?: boolean,
+    private description?: string
 
   ) { }
 
@@ -36,14 +36,15 @@ export class User {
   public getRole(): UserRole {
     return this.role
   }
-
+  
+  public getisApproved(): boolean{
+    return this.isApproved as boolean
+  }
+  
   public getDescription(): string {
     return this.description as string
   }
 
-  public getisApproved(): boolean{
-    return this.isApproved as boolean
-  }
 
 }
 

@@ -23,6 +23,7 @@ export class UserController {
     } catch (err) {
       res.status(err.erroCode || 400).send({ message: err.message })
     }
+    
   }
 
   public async signUpAdmin(req: Request, res: Response) {
