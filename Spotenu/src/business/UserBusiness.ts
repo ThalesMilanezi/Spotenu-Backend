@@ -156,4 +156,25 @@ export class UserBusiness {
 
     }
   }
+
+  public async ApproveBand(id: string, token: string){
+    const verifyUser = this.tokenGenerator.verify(token) 
+    const user = await this.userDataBase.getUserById(verifyUser.id)
+    const band = await this.userDataBase.getUserById(id)
+    await this.userDataBase.approveBand(id as any) 
+    
+  }
+
+  public async getAllBands(token: string){
+    const verifyUser = this.tokenGenerator.verify(token)
+    const user = await this.userDataBase.getUserById(verifyUser.id)
+
+    if(user?.getRole() !== "ADMIN"){
+      throw new Unauthorized("You must be admin to see all bands")
+    }
+
+    const bands = await this.userDataBase.getAllBands()
+
+    return bands
+  }
 }

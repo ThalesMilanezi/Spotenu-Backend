@@ -23,7 +23,7 @@ export class UserController {
     } catch (err) {
       res.status(err.erroCode || 400).send({ message: err.message })
     }
-    
+
   }
 
   public async signUpAdmin(req: Request, res: Response) {
@@ -54,6 +54,27 @@ export class UserController {
       res.status(200).send(result)
     } catch (err) {
       res.status(err.erroCode || 400).send({ message: err.message })
+    }
+  }
+
+
+  public async getAllBands(req: Request, res: Response) {
+    const token = req.headers.authorization as string
+    try {
+      const result = await UserController.UserBusiness.getAllBands(token)
+      res.status(200).send(result)
+    } catch (err) {
+      res.status(err.errorCode || 400).send({ message: err.message })
+    }
+  }
+
+  public async ApproveBand(req: Request, res: Response) {
+    const token = req.headers.authorization as string
+    try {
+      const result = await UserController.UserBusiness.ApproveBand(req.body.id, token)
+      res.status(200).send({ message: "banda aprovada com sucesso" })
+    } catch (err) {
+      res.status(err.errorCode || 400).send({ message: err.message })
     }
   }
 }

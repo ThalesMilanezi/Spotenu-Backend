@@ -78,4 +78,11 @@ export class UserDatabase extends BaseDatabase {
       .where({ id })
     return this.toModel(result[0])
   }
+
+  public async getAllBands(): Promise<User | undefined> {
+    const result = await this.getConnection().raw(`
+    SELECT * FROM ${UserDatabase.TABLE_NAME} WHERE role = "BAND"
+    `)
+    return result[0].filter((item:any )=> this.toModel(item))
+  }
 }
