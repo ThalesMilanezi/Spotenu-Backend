@@ -1,15 +1,18 @@
+import dotenv from "dotenv";
 import express from "express";
-import { AddressInfo } from "net";
-// import { userRouter } from "./router/UserRouter";
+import { userRouter } from "./router/UserRouter";
+import cors from "cors";
+import { genderRouter } from "./router/GenderRouter";
+
+
+dotenv.config();
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
-const server = app.listen(3000, () => {
-  if (server) {
-    const address = server.address() as AddressInfo;
-    console.log(`Servidor rodando em http://localhost:${address.port}`);
-  } else {
-    console.error(`Falha ao rodar o servidor.`);
-  }
-});
+app.use("/", userRouter)
+app.use("/gender", genderRouter)
+
+
+export default app
