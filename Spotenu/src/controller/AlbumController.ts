@@ -4,6 +4,7 @@ import { AlbumDatabase } from "../data/AlbumDatabase";
 import { UserDatabase } from "../data/UserDatabase";
 import { IdGenerator } from "../services/idGenerator";
 import { TokenGenerator } from "../services/tokenGenerator";
+import { BaseDatabase } from '../data/BaseDatabase';
 
 export class AlbumController {
   private static AlbumBusiness = new AlbumBusiness(
@@ -17,22 +18,25 @@ export class AlbumController {
     try {
       const token = req.headers.authorization as any
       const result = await AlbumController.AlbumBusiness.createAlbum(req.body.name, token)
-      res.status(200).send(result)
+      res.status(200).send({message: "Album criado com sucesso!"})
     } catch (err) {
       res.status(err.erroCode || 400).send({
         message: err.message
       })
     }
+    await BaseDatabase.destroyConnection()
   }
 
   public async getAlbumById(req: Request, res: Response) {
     try {
       const token = req.headers.authorization as any
       const result = await AlbumController.AlbumBusiness.getAlbumById(req.body.id, token)
+      res.status(200).send(result)
     } catch (err) {
       res.status(err.erroCode || 400).send({
         message: err.message
       })
     }
+    await BaseDatabase.destroyConnection()
   }
 }

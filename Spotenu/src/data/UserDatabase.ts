@@ -50,8 +50,8 @@ export class UserDatabase extends BaseDatabase {
   public async approveBand(id: User): Promise<void> {
     await this.getConnection().raw(`
     UPDATE UserSpotenu
-    SET is_approved = 0
-    WHERE id = ${id};
+    SET is_approved = 1
+    WHERE id = "${id}";
   `)
   }
 

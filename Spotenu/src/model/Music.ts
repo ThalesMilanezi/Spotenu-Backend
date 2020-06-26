@@ -2,7 +2,7 @@ export class Music {
   constructor(
     private id: string,
     private name:string,
-    private album: string
+    private albumId: string
   ) {}
 
   public getId(): string {
@@ -14,7 +14,7 @@ export class Music {
   }
   
   public getAlbum(): string {
-    return this.album
+    return this.albumId
   }
   
 }
