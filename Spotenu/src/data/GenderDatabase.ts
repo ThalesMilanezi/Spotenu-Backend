@@ -39,11 +39,11 @@ export class GenderDatabase extends BaseDatabase {
   return this.toModel(result[0])
   }
 
-  public async getAllGender(): Promise<Gender | undefined> {
-    const result = await this.getConnection()
-    .select("*")
-    .from(GenderDatabase.TABLE_NAME)
-    return this.toModel(result[0])
+  public async getAllGender(): Promise<Gender[]> {
+    const result = await this.getConnection().raw(`
+    SELECT * FROM GenderSpotenu;
+    `)
+    return result[0].map((item: any)=> this.toModel(item))
   }
 
 }

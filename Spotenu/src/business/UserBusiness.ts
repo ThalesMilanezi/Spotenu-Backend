@@ -23,7 +23,7 @@ export class UserBusiness {
     password: string,
     role: string
   ) {
-    if (!name || !email || !nickname || !password || !role) {
+    if (!name || !email || !nickname || !password ) {
       throw new InvalidParameterError("Missing inputs, check the requireds inputs and try again!")
     }
 
@@ -55,7 +55,7 @@ export class UserBusiness {
     password: string,
     role: string
   ) {
-    if (!name || !email || !nickname || !password || !role) {
+    if (!name || !email || !nickname || !password ) {
       throw new InvalidParameterError("Missing inputs, check the requireds inputs and try again!")
     }
 
@@ -115,11 +115,11 @@ export class UserBusiness {
     const acessToken = this.tokenGenerator.generate({
       id, role
     })
-    if (!isApproved) {
-      throw new Forbidden("Your band is not approved yet, check again later")
-    } else {
-      return { acessToken }
-    }
+    // if (!isApproved) {
+    //   throw new Forbidden("Your band is not approved yet, check again later")
+    // } else {
+    //   return { acessToken }
+    // }
   }
 
   public async login(userInput: string, password: string) {
@@ -128,7 +128,6 @@ export class UserBusiness {
     }
 
     const user = await this.userDataBase.getUserByEmail(userInput)
-    console.log("Objeto user aqui",user)
    
     if (userInput.indexOf("@")) {
       const correctPassword = await this.hashGenerator.compareHash(password, user!.getPassword())

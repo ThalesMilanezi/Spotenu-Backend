@@ -24,7 +24,7 @@ export class MusicBusiness {
     }
 
     const searchAlbum = await this.albumDatabase.getAlbumById(albumId)
-    if(searchAlbum === undefined){
+    if(!searchAlbum){
       throw new Error("This album does not exist, try again!")
     }
 
