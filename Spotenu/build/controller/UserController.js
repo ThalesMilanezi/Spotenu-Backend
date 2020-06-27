@@ -33,7 +33,7 @@ class UserController {
     signUpAdmin(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield UserController.UserBusiness.signupListener(req.body.name, req.body.email, req.body.nickname, req.body.password, req.body.role);
+                const result = yield UserController.UserBusiness.signupAdmin(req.body.name, req.body.email, req.body.nickname, req.body.password, User_1.UserRole.ADMIN);
                 res.status(200).send(result);
             }
             catch (err) {
@@ -45,8 +45,8 @@ class UserController {
     signUpBand(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield UserController.UserBusiness.signupBand(req.body.name, req.body.email, req.body.nickname, req.body.password, req.body.role, req.body.description, req.body.isApproved);
-                res.status(200).send(result);
+                const result = yield UserController.UserBusiness.signupBand(req.body.name, req.body.email, req.body.nickname, req.body.password, User_1.UserRole.BAND, req.body.description, req.body.isApproved);
+                res.status(200).send({ message: "Parabens sua Banda foi criado com sucesso, espere os administradores aprovarem sua banda para acessar todas as funcionalidades do site!" });
             }
             catch (err) {
                 res.status(err.erroCode || 400).send({ message: err.message });

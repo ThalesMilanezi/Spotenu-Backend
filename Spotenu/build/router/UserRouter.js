@@ -11,5 +11,5 @@ exports.userRouter.post("/listener", new UserController_1.UserController().signU
 exports.userRouter.post("/band", new UserController_1.UserController().signUpBand);
 exports.userRouter.post("/admin", new UserController_1.UserController().signUpAdmin);
 exports.userRouter.post("/login", new UserController_1.UserController().login);
-exports.userRouter.get("/bands", new UserController_1.UserController().getAllBands);
+exports.userRouter.get("/band/all", new UserController_1.UserController().getAllBands);
 exports.userRouter.post("/approvebands", new UserController_1.UserController().ApproveBand);

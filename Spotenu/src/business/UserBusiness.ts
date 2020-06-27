@@ -176,4 +176,12 @@ export class UserBusiness {
 
     return bands
   }
+
+  public async getUsers(token: string){
+    const verifyUser = this.tokenGenerator.verify(token)
+    const user = await this.userDataBase.getUserById(verifyUser.id)
+
+    const getUser = await this.userDataBase.getUserById(user!.getId())
+    return getUser
+  }
 }

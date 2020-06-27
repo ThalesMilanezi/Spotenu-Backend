@@ -46,7 +46,7 @@ export class UserController {
       const result = await UserController.UserBusiness.signupBand(
         req.body.name, req.body.email, req.body.nickname, req.body.password, UserRole.BAND, req.body.description, req.body.isApproved
       );
-      res.status(200).send({message: "Parabens sua Banda foi criado com sucesso, espere os administradores aprovarem sua banda para acessar todas as funcionalidades do site!"})
+      res.status(200).send({ message: "Parabens sua Banda foi criado com sucesso, espere os administradores aprovarem sua banda para acessar todas as funcionalidades do site!" })
     } catch (err) {
       res.status(err.erroCode || 400).send({ message: err.message })
     }
@@ -77,6 +77,15 @@ export class UserController {
     try {
       const result = await UserController.UserBusiness.ApproveBand(req.body.id, token)
       res.status(200).send({ message: "banda aprovada com sucesso" })
+    } catch (err) {
+      res.status(err.errorCode || 400).send({ message: err.message })
+    }
+  }
+
+  public async getUser(req: Request, res: Response) {
+    const token = req.headers.authorization as string
+    try {
+      const result = await UserController.UserBusiness.getUsers(token)
     } catch (err) {
       res.status(err.errorCode || 400).send({ message: err.message })
     }
