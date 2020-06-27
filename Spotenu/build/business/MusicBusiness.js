@@ -28,7 +28,7 @@ class MusicBusiness {
                 throw new Unauthorized_1.Unauthorized("You can't create a new music!");
             }
             const searchAlbum = yield this.albumDatabase.getAlbumById(albumId);
-            if (searchAlbum === undefined) {
+            if (!searchAlbum) {
                 throw new Error("This album does not exist, try again!");
             }
             const idMusic = yield this.idGenerator.generate();

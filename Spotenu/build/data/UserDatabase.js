@@ -51,8 +51,8 @@ class UserDatabase extends BaseDatabase_1.BaseDatabase {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.getConnection().raw(`
     UPDATE UserSpotenu
-    SET is_approved = 0
-    WHERE id = ${id};
+    SET is_approved = 1
+    WHERE id = "${id}";
   `);
         });
     }

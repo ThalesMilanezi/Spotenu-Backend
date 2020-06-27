@@ -23,7 +23,7 @@ class UserBusiness {
     }
     signupListener(name, email, nickname, password, role) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!name || !email || !nickname || !password || !role) {
+            if (!name || !email || !nickname || !password) {
                 throw new InvalidParameters_1.InvalidParameterError("Missing inputs, check the requireds inputs and try again!");
             }
             if (password.length < 6) {
@@ -44,7 +44,7 @@ class UserBusiness {
     }
     signupAdmin(name, email, nickname, password, role) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!name || !email || !nickname || !password || !role) {
+            if (!name || !email || !nickname || !password) {
                 throw new InvalidParameters_1.InvalidParameterError("Missing inputs, check the requireds inputs and try again!");
             }
             if (password.length < 10) {
@@ -82,12 +82,11 @@ class UserBusiness {
             const acessToken = this.tokenGenerator.generate({
                 id, role
             });
-            if (!isApproved) {
-                throw new Forbidden_1.Forbidden("Your band is not approved yet, check again later");
-            }
-            else {
-                return { acessToken };
-            }
+            // if (!isApproved) {
+            //   throw new Forbidden("Your band is not approved yet, check again later")
+            // } else {
+            //   return { acessToken }
+            // }
         });
     }
     login(userInput, password) {
@@ -96,7 +95,6 @@ class UserBusiness {
                 throw new InvalidParameters_1.InvalidParameterError("Missing inputs, check the requireds inputs and try again!");
             }
             const user = yield this.userDataBase.getUserByEmail(userInput);
-            console.log("Objeto user aqui", user);
             if (userInput.indexOf("@")) {
                 const correctPassword = yield this.hashGenerator.compareHash(password, user.getPassword());
                 if (!correctPassword) {

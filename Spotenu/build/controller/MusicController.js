@@ -23,7 +23,7 @@ class MusicController {
             try {
                 const token = req.headers.authorization;
                 const result = yield MusicController.musicBusiness.createMusic(req.body.name, req.body.albumId, token);
-                res.status(200).send(result);
+                res.status(200).send({ message: "Musica criada com sucesso!" });
             }
             catch (err) {
                 res.status(err.erroCode || 400).send({
