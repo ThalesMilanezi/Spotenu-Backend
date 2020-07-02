@@ -27,7 +27,6 @@ Para isso, utilizei um tema de músicas, onde é possível: </p>
 <p>Além disso, aproveitei para ver conceitos sobre buscas por termos utilizando um banco relacional, o mySQL.
 O Projeto usa a AWS para sua hospedagem.
 </p>
-<p>Base Url: https://tc8upevjpc.execute-api.us-east-1.amazonaws.com/v1</p>
 
 <img src="https://img.shields.io/badge/status-em%20desenvolvimento-orange"/>:warning:
 
