@@ -34,6 +34,6 @@ export class AlbumBusiness {
     if (user?.getRole() !== "ADMIN" && user?.getRole() !== "BAND") {
       throw new Unauthorized("You can't search any album!")
     }
-    await this.albumDatabase.getAlbumById(id)
+    return await this.albumDatabase.getAlbumById(id)
   }
 }

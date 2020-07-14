@@ -21,7 +21,7 @@ class MusicController {
     createMusic(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const token = req.headers.authorization;
+                const token = req.headers.authorization || req.headers.Authorization;
                 const result = yield MusicController.musicBusiness.createMusic(req.body.name, req.body.albumId, token);
                 res.status(200).send({ message: "Musica criada com sucesso!" });
             }
@@ -36,7 +36,7 @@ class MusicController {
     getMusicById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const token = req.headers.authorization;
+                const token = req.headers.authorization || req.headers.Authorization;
                 const result = yield MusicController.musicBusiness.getMusicById(req.params.id, token);
                 res.status(200).send(result);
             }

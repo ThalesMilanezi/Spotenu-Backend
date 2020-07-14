@@ -1,4 +1,4 @@
 import app from "./index";
-import { createLambdaHandler } from "lbn-lambda-express";
+import serverless from 'serverless-http'
 
-export const handler = createLambdaHandler(app);
+export const handler = serverless(app);

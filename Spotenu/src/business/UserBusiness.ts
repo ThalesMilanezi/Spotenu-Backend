@@ -23,7 +23,7 @@ export class UserBusiness {
     password: string,
     role: string
   ) {
-    if (!name || !email || !nickname || !password ) {
+    if (!name || !email || !nickname || !password) {
       throw new InvalidParameterError("Missing inputs, check the requireds inputs and try again!")
     }
 
@@ -55,7 +55,7 @@ export class UserBusiness {
     password: string,
     role: string
   ) {
-    if (!name || !email || !nickname || !password ) {
+    if (!name || !email || !nickname || !password) {
       throw new InvalidParameterError("Missing inputs, check the requireds inputs and try again!")
     }
 
@@ -89,11 +89,9 @@ export class UserBusiness {
     email: string,
     nickname: string,
     password: string,
-    role: string,
-    description: string,
-    isApproved: boolean
+    description: string
   ) {
-    if (!name || !email || !nickname || !password || !role || !description) {
+    if (!name || !email || !nickname || !password || !description) {
       throw new InvalidParameterError("Missing inputs, check the requireds inputs and try again!")
     }
 
@@ -105,16 +103,14 @@ export class UserBusiness {
       throw new InvalidParameterError("Check the email format and try again.")
     }
 
+    let role = UserRole.BAND
     const id = this.idGenerator.generate();
     const cryptedPassword = await this.hashGenerator.hash(password)
 
-    await this.userDataBase.createUser(
-      new User(id, name, email, nickname, cryptedPassword, stringToUserRole(role), isApproved, description )
-    )
+    const newBand = new User(id, name, email, nickname, cryptedPassword, stringToUserRole(role), false, description)
+    await this.userDataBase.createBand(newBand)
 
-    const acessToken = this.tokenGenerator.generate({
-      id, role
-    })
+
     // if (!isApproved) {
     //   throw new Forbidden("Your band is not approved yet, check again later")
     // } else {
@@ -123,52 +119,49 @@ export class UserBusiness {
   }
 
   public async login(userInput: string, password: string) {
+
     if (!userInput || !password) {
       throw new InvalidParameterError("Missing inputs, check the requireds inputs and try again!")
     }
 
-    const user = await this.userDataBase.getUserByEmail(userInput)
-   
-    if (userInput.indexOf("@")) {
-      const correctPassword = await this.hashGenerator.compareHash(password, user!.getPassword())
-      if (!correctPassword) {
-        throw new Unauthorized("Some credencials are incorrect 1")
-      }
-      const acessToken = this.tokenGenerator.generate({
-        id: user!.getId(),
-        role: user!.getRole()
-      })
+    let user
 
-      return { acessToken }
-
+    if (userInput.indexOf("@") !== -1) {
+      user = await this.userDataBase.getUserByNickname(userInput)
     } else {
-      const correctPassword = await this.hashGenerator.compareHash(password, user!.getPassword())
-      if (!correctPassword) {
-        throw new Unauthorized("Some credencials are incorrect 2")
-      }
-      const acessToken = this.tokenGenerator.generate({
-        id: user!.getId(),
-        role: user!.getRole()
-      })
-
-      return { acessToken }
-
+      user = await this.userDataBase.getUserByEmail(userInput)
     }
+
+    if (!user) {
+      throw new Error("This user is not found in our site, try again")
+    }
+
+    const correctPassword = await this.hashGenerator.compareHash(password, user.getPassword())
+
+    if (!correctPassword) {
+      throw new Unauthorized("Some credencials are incorrect")
+    }
+    const acessToken = this.tokenGenerator.generate({
+      id: user.getId(),
+      role: user.getRole()
+    })
+
+    return { acessToken }
   }
 
-  public async ApproveBand(id: string, token: string){
-    const verifyUser = this.tokenGenerator.verify(token) 
+  public async ApproveBand(id: string, token: string) {
+    const verifyUser = this.tokenGenerator.verify(token)
     const user = await this.userDataBase.getUserById(verifyUser.id)
     const band = await this.userDataBase.getUserById(id)
-    await this.userDataBase.approveBand(id as any) 
-    
+    await this.userDataBase.approveBand(id as any)
+
   }
 
-  public async getAllBands(token: string){
+  public async getAllBands(token: string) {
     const verifyUser = this.tokenGenerator.verify(token)
     const user = await this.userDataBase.getUserById(verifyUser.id)
 
-    if(user?.getRole() !== "ADMIN"){
+    if (user?.getRole() !== "ADMIN") {
       throw new Unauthorized("You must be admin to see all bands")
     }
 
@@ -177,7 +170,7 @@ export class UserBusiness {
     return bands
   }
 
-  public async getUsers(token: string){
+  public async getUsers(token: string) {
     const verifyUser = this.tokenGenerator.verify(token)
     const user = await this.userDataBase.getUserById(verifyUser.id)
 

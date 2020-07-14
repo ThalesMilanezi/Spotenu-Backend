@@ -6,12 +6,16 @@ import { genderRouter } from "./router/GenderRouter";
 import { albumRouter } from "./router/AlbumRouter";
 import { musicRouter } from "./router/MusicRouter";
 
+if(process.env.NODE_ENV !=="serverless") {
+  dotenv.config();
+}
 
-dotenv.config();
+
 const app = express();
-
+app.use(cors({
+  origin: true
+}));
 app.use(express.json());
-app.use(cors());
 
 app.use("/", userRouter)
 app.use("/gender", genderRouter)

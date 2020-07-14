@@ -66,7 +66,7 @@ class UserController {
     }
     getAllBands(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const token = req.headers.authorization;
+            const token = req.headers.authorization || req.headers.Authorization;
             try {
                 const result = yield UserController.UserBusiness.getAllBands(token);
                 res.status(200).send(result);
@@ -78,7 +78,7 @@ class UserController {
     }
     ApproveBand(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const token = req.headers.authorization;
+            const token = req.headers.authorization || req.headers.Authorization;
             try {
                 const result = yield UserController.UserBusiness.ApproveBand(req.body.id, token);
                 res.status(200).send({ message: "banda aprovada com sucesso" });

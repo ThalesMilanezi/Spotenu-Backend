@@ -33,10 +33,18 @@
     "knex": "^0.21.1",
     "lbn-lambda-express": "^0.1.10",
     "mysql": "^2.18.1",
+    "serverless": "^1.74.1",
+    "serverless-http": "^2.5.0",
     "typescript": "^3.9.2",
     "uuid": "^8.0.0"
   },
   "devDependencies": {
-    "ts-node-dev": "^1.0.0-pre.44"
+    "serverless-dotenv-plugin": "^2.4.2",
+    "serverless-offline": "^6.4.0",
+    "serverless-webpack": "^5.3.2",
+    "ts-loader": "^8.0.0",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "webpack": "^4.43.0",
+    "webpack-node-externals": "^2.5.0"
   }
 }

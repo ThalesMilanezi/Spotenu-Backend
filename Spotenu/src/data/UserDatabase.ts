@@ -4,7 +4,7 @@ import { User } from '../model/User'
 export class UserDatabase extends BaseDatabase {
   public static TABLE_NAME: string = "UserSpotenu"
 
-  private toModel(dbModel: any): User | undefined {
+  private toModel(dbModel?: any): User | undefined {
     return (
       dbModel &&
       new User(
@@ -14,6 +14,7 @@ export class UserDatabase extends BaseDatabase {
         dbModel.nickname,
         dbModel.password,
         dbModel.role,
+        dbModel.is_approved,
         dbModel.description
       )
     )
@@ -41,7 +42,6 @@ export class UserDatabase extends BaseDatabase {
         nickname: user.getNickname(),
         password: user.getPassword(),
         role: user.getRole(),
-        is_approved: user.getisApproved(),
         description: user.getDescription()
       })
       .into(UserDatabase.TABLE_NAME)
@@ -83,6 +83,6 @@ export class UserDatabase extends BaseDatabase {
     const result = await this.getConnection().raw(`
     SELECT * FROM ${UserDatabase.TABLE_NAME} WHERE role = "BAND"
     `)
-    return result[0].filter((item:any )=> this.toModel(item))
+    return result[0].map((item:any )=> this.toModel(item))
   }
 }

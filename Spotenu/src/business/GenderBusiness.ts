@@ -32,7 +32,7 @@ export class GenderBusiness {
     if (user?.getRole() !== "ADMIN") {
       throw new Unauthorized("You must be a adminstrator of this page to access this create a gender")
     }
-    await this.genderDataBase.getGenderByName(name)
+    return await this.genderDataBase.getGenderByName(name)
   }
 
   public async getAllGender(token: string) {
@@ -42,6 +42,6 @@ export class GenderBusiness {
     if (user?.getRole() !== "ADMIN") {
       throw new Unauthorized("You must be a adminstrator of this page to access this create a gender")
     }
-    await this.genderDataBase.getAllGender()
+    return await this.genderDataBase.getAllGender()
   }
 }
