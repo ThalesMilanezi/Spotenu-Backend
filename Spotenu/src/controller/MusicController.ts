@@ -17,7 +17,7 @@ export class MusicController {
   )
   public async createMusic(req: Request, res: Response) {
     try {
-      const token = req.headers.authorization as any
+      const token = req.headers.authorization || req.headers.Authorization as any
       const result = await MusicController.musicBusiness.createMusic(req.body.name, req.body.albumId, token)
       res.status(200).send({message: "Musica criada com sucesso!"})
     } catch (err) {
@@ -30,7 +30,7 @@ export class MusicController {
 
   public async getMusicById(req: Request, res: Response) {
     try {
-      const token = req.headers.authorization as any
+      const token = req.headers.authorization || req.headers.Authorization as any
       const result = await MusicController.musicBusiness.getMusicById(req.params.id, token)
       res.status(200).send(result)
     } catch (err) {

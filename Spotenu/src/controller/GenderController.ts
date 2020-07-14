@@ -16,7 +16,7 @@ export class GenderController {
 
   public async createGender(req: Request, res: Response) {
     try {
-      const token = req.headers.authorization as any
+      const token = req.headers.authorization || req.headers.Authorization as any
       const result = await GenderController.GenderBusiness.createGender(req.body.name, token)
       res.status(200).send({message: "Parabens, genero criado com sucesso!"})
     } catch (err) {
@@ -29,7 +29,7 @@ export class GenderController {
 
   public async getGenderByName(req: Request, res: Response) {
     try {
-      const token = req.headers.authorization as any
+      const token = req.headers.authorization || req.headers.Authorization as any
       const result = await GenderController.GenderBusiness.getGenderByName(req.body.name, token)
       res.status(200).send(result)
     } catch (err) {
@@ -42,7 +42,7 @@ export class GenderController {
 
   public async getAllGenders(req: Request, res: Response) {
     try {
-      const token = req.headers.authorization as any
+      const token = req.headers.authorization || req.headers.Authorization as any
       const result = await GenderController.GenderBusiness.getAllGender(token)
       res.status(200).send(result)
     } catch (err) {

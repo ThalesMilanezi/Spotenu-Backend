@@ -20,7 +20,7 @@ class AlbumController {
     createAlbum(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const token = req.headers.authorization;
+                const token = req.headers.authorization || req.headers.Authorization;
                 const result = yield AlbumController.AlbumBusiness.createAlbum(req.body.name, token);
                 res.status(200).send({ message: "Album criado com sucesso!" });
             }
@@ -35,7 +35,7 @@ class AlbumController {
     getAlbumById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const token = req.headers.authorization;
+                const token = req.headers.authorization || req.headers.Authorization;
                 const result = yield AlbumController.AlbumBusiness.getAlbumById(req.body.id, token);
                 res.status(200).send(result);
             }

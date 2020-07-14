@@ -16,7 +16,7 @@ export class AlbumController {
 
   public async createAlbum(req: Request, res: Response) {
     try {
-      const token = req.headers.authorization as any
+      const token = req.headers.authorization || req.headers.Authorization as any
       const result = await AlbumController.AlbumBusiness.createAlbum(req.body.name, token)
       res.status(200).send({message: "Album criado com sucesso!"})
     } catch (err) {
@@ -29,7 +29,7 @@ export class AlbumController {
 
   public async getAlbumById(req: Request, res: Response) {
     try {
-      const token = req.headers.authorization as any
+      const token = req.headers.authorization || req.headers.Authorization as any
       const result = await AlbumController.AlbumBusiness.getAlbumById(req.body.id, token)
       res.status(200).send(result)
     } catch (err) {

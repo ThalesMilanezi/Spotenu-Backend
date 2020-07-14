@@ -20,7 +20,7 @@ class GenderController {
     createGender(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const token = req.headers.authorization;
+                const token = req.headers.authorization || req.headers.Authorization;
                 const result = yield GenderController.GenderBusiness.createGender(req.body.name, token);
                 res.status(200).send({ message: "Parabens, genero criado com sucesso!" });
             }
@@ -35,7 +35,7 @@ class GenderController {
     getGenderByName(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const token = req.headers.authorization;
+                const token = req.headers.authorization || req.headers.Authorization;
                 const result = yield GenderController.GenderBusiness.getGenderByName(req.body.name, token);
                 res.status(200).send(result);
             }
@@ -50,7 +50,7 @@ class GenderController {
     getAllGenders(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const token = req.headers.authorization;
+                const token = req.headers.authorization || req.headers.Authorization;
                 const result = yield GenderController.GenderBusiness.getAllGender(token);
                 res.status(200).send(result);
             }
