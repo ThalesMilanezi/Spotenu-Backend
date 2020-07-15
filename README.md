@@ -20,7 +20,7 @@ Para isso, utilizei um tema de músicas, onde é possível: </p>
 - [X] Criar Bandas
 - [X] Criar Albuns
 - [X] Criar Generos
-- [ ] Criar Músicas
+- [X] Criar Músicas
 - [ ] Feed com cada usuário tem uma funcionalidade específica
 - [ ] Usuários premium podendo criar playlists próprias
 
@@ -34,9 +34,8 @@ O Projeto usa a AWS para sua hospedagem.
 <h4>As instruções são:</h4>
 
 1. `npm install` para instalar todas as dependências;
-2. `npm run start:dev` para rodar localmente o projeto
-3. `npm run build` para gerar uma versão possível de ser deployada com 
-os arquivos transpilados para Javascript
+2. `sls offline` para rodar localmente o projeto
+3. `sls deploy` para gerar uma versão possível de ser deployada.
 
 <h3>Contato</h3>
 <p>:man: Thales Fernando Milanezi</p>
