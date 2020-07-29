@@ -91,7 +91,12 @@ export class UserBusiness {
     password: string,
     description: string
   ) {
-    if (!name || !email || !nickname || !password || !description) {
+    if (name === undefined ||
+      email === undefined ||
+      nickname === undefined ||
+      password === undefined ||
+      description === undefined
+    ) {
       throw new InvalidParameterError("Missing inputs, check the requireds inputs and try again!")
     }
 
@@ -107,7 +112,7 @@ export class UserBusiness {
     const id = this.idGenerator.generate();
     const cryptedPassword = await this.hashGenerator.hash(password)
 
-    const newBand = new User(id, name, email, nickname, cryptedPassword, stringToUserRole(role), false, description)
+    const newBand = new User(id, name, email, nickname, cryptedPassword, role, description)
     await this.userDataBase.createBand(newBand)
 
 

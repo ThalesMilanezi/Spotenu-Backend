@@ -45,11 +45,13 @@ export class UserController {
     try {
       const result = await UserController.UserBusiness.signupBand(
         req.body.name, req.body.email, req.body.nickname, req.body.password, req.body.description
-      );
-      res.status(200).send({ message: "Parabens sua Banda foi criado com sucesso, espere os administradores aprovarem sua banda para acessar todas as funcionalidades do site!" })
+        );
+        res.status(200).send(result)
     } catch (err) {
       res.status(err.erroCode || 400).send({ message: err.message })
     }
+    await BaseDatabase.destroyConnection()
+
   }
 
   public async login(req: Request, res: Response) {
@@ -64,6 +66,8 @@ export class UserController {
     } catch (err) {
       res.status(err.erroCode || 400).send({ message: err.message })
     }
+    await BaseDatabase.destroyConnection()
+
   }
 
 

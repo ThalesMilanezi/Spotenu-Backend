@@ -42,7 +42,8 @@ export class UserDatabase extends BaseDatabase {
         nickname: user.getNickname(),
         password: user.getPassword(),
         role: user.getRole(),
-        description: user.getDescription()
+        description: user.getDescription(),
+        is_approved: user.getisApproved()
       })
       .into(UserDatabase.TABLE_NAME)
   }
