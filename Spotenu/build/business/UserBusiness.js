@@ -65,9 +65,13 @@ class UserBusiness {
             return { acessToken };
         });
     }
-    signupBand(name, email, nickname, password, role, description, isApproved) {
+    signupBand(name, email, nickname, password, description) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!name || !email || !nickname || !password || !role || !description) {
+            if (name === undefined ||
+                email === undefined ||
+                nickname === undefined ||
+                password === undefined ||
+                description === undefined) {
                 throw new InvalidParameters_1.InvalidParameterError("Missing inputs, check the requireds inputs and try again!");
             }
             if (password.length < 6) {
@@ -76,12 +80,11 @@ class UserBusiness {
             if (email.indexOf("@") === -1) {
                 throw new InvalidParameters_1.InvalidParameterError("Check the email format and try again.");
             }
+            let role = User_1.UserRole.BAND;
             const id = this.idGenerator.generate();
             const cryptedPassword = yield this.hashGenerator.hash(password);
-            yield this.userDataBase.createUser(new User_1.User(id, name, email, nickname, cryptedPassword, User_1.stringToUserRole(role), isApproved, description));
-            const acessToken = this.tokenGenerator.generate({
-                id, role
-            });
+            const newBand = new User_1.User(id, name, email, nickname, cryptedPassword, role, description);
+            yield this.userDataBase.createBand(newBand);
             // if (!isApproved) {
             //   throw new Forbidden("Your band is not approved yet, check again later")
             // } else {
@@ -94,29 +97,25 @@ class UserBusiness {
             if (!userInput || !password) {
                 throw new InvalidParameters_1.InvalidParameterError("Missing inputs, check the requireds inputs and try again!");
             }
-            const user = yield this.userDataBase.getUserByEmail(userInput);
-            if (userInput.indexOf("@")) {
-                const correctPassword = yield this.hashGenerator.compareHash(password, user.getPassword());
-                if (!correctPassword) {
-                    throw new Unauthorized_1.Unauthorized("Some credencials are incorrect 1");
-                }
-                const acessToken = this.tokenGenerator.generate({
-                    id: user.getId(),
-                    role: user.getRole()
-                });
-                return { acessToken };
+            let user;
+            if (userInput.indexOf("@") !== -1) {
+                user = yield this.userDataBase.getUserByNickname(userInput);
             }
             else {
-                const correctPassword = yield this.hashGenerator.compareHash(password, user.getPassword());
-                if (!correctPassword) {
-                    throw new Unauthorized_1.Unauthorized("Some credencials are incorrect 2");
-                }
-                const acessToken = this.tokenGenerator.generate({
-                    id: user.getId(),
-                    role: user.getRole()
-                });
-                return { acessToken };
+                user = yield this.userDataBase.getUserByEmail(userInput);
             }
+            if (!user) {
+                throw new Error("This user is not found in our site, try again");
+            }
+            const correctPassword = yield this.hashGenerator.compareHash(password, user.getPassword());
+            if (!correctPassword) {
+                throw new Unauthorized_1.Unauthorized("Some credencials are incorrect");
+            }
+            const acessToken = this.tokenGenerator.generate({
+                id: user.getId(),
+                role: user.getRole()
+            });
+            return { acessToken };
         });
     }
     ApproveBand(id, token) {
@@ -136,6 +135,14 @@ class UserBusiness {
             }
             const bands = yield this.userDataBase.getAllBands();
             return bands;
+        });
+    }
+    getUsers(token) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const verifyUser = this.tokenGenerator.verify(token);
+            const user = yield this.userDataBase.getUserById(verifyUser.id);
+            const getUser = yield this.userDataBase.getUserById(user.getId());
+            return getUser;
         });
     }
 }

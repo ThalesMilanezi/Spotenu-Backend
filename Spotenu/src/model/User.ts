@@ -8,8 +8,8 @@ export class User {
     private nickname: string,
     private password: string,
     private role: UserRole,
-    private isApproved?: boolean,
-    private description?: string
+    private description?: string,
+    private isApproved?: boolean
 
   ) { }
 
@@ -37,15 +37,14 @@ export class User {
     return this.role
   }
   
-  public getisApproved(): boolean{
-    return this.isApproved as boolean
-  }
-  
   public getDescription(): string {
     return this.description as string
   }
 
-
+  public getisApproved(): boolean{
+    return this.isApproved as boolean
+  }
+        
 }
 
 export enum UserRole {

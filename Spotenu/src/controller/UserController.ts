@@ -46,24 +46,28 @@ export class UserController {
       const result = await UserController.UserBusiness.signupBand(
         req.body.name, req.body.email, req.body.nickname, req.body.password, req.body.description
       );
-      res.status(200).send({ message: "Parabens sua Banda foi criado com sucesso, espere os administradores aprovarem sua banda para acessar todas as funcionalidades do site!" })
+      res.status(200).send(result)
     } catch (err) {
       res.status(err.erroCode || 400).send({ message: err.message })
     }
+    await BaseDatabase.destroyConnection()
+
   }
 
   public async login(req: Request, res: Response) {
     try {
       let result
-      if (req.body.email) {
-        result = await UserController.UserBusiness.login(req.body.email, req.body.password)
-      } if (req.body.nickname) {
-        result = await UserController.UserBusiness.login(req.body.nickname, req.body.password)
+      if (req.body.userInput.indexOf("@") !== -1) {
+        result = await UserController.UserBusiness.login(req.body.userInput, req.body.password)
+      } if (req.body.userInput) {
+        result = await UserController.UserBusiness.login(req.body.userInput, req.body.password)
       }
       res.status(200).send(result)
     } catch (err) {
       res.status(err.erroCode || 400).send({ message: err.message })
     }
+    await BaseDatabase.destroyConnection()
+
   }
 
 

@@ -45,23 +45,31 @@ class UserController {
     signUpBand(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield UserController.UserBusiness.signupBand(req.body.name, req.body.email, req.body.nickname, req.body.password, User_1.UserRole.BAND, req.body.description, req.body.isApproved);
-                res.status(200).send({ message: "Parabens sua Banda foi criado com sucesso, espere os administradores aprovarem sua banda para acessar todas as funcionalidades do site!" });
-            }
-            catch (err) {
-                res.status(err.erroCode || 400).send({ message: err.message });
-            }
-        });
-    }
-    login(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const result = yield UserController.UserBusiness.login(req.body.emailOrNickname, req.body.password);
+                const result = yield UserController.UserBusiness.signupBand(req.body.name, req.body.email, req.body.nickname, req.body.password, req.body.description);
                 res.status(200).send(result);
             }
             catch (err) {
                 res.status(err.erroCode || 400).send({ message: err.message });
             }
+            yield BaseDatabase_1.BaseDatabase.destroyConnection();
+        });
+    }
+    login(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let result;
+                if (req.body.email) {
+                    result = yield UserController.UserBusiness.login(req.body.email, req.body.password);
+                }
+                if (req.body.nickname) {
+                    result = yield UserController.UserBusiness.login(req.body.nickname, req.body.password);
+                }
+                res.status(200).send(result);
+            }
+            catch (err) {
+                res.status(err.erroCode || 400).send({ message: err.message });
+            }
+            yield BaseDatabase_1.BaseDatabase.destroyConnection();
         });
     }
     getAllBands(req, res) {
@@ -74,6 +82,7 @@ class UserController {
             catch (err) {
                 res.status(err.errorCode || 400).send({ message: err.message });
             }
+            yield BaseDatabase_1.BaseDatabase.destroyConnection();
         });
     }
     ApproveBand(req, res) {
@@ -86,6 +95,19 @@ class UserController {
             catch (err) {
                 res.status(err.errorCode || 400).send({ message: err.message });
             }
+            yield BaseDatabase_1.BaseDatabase.destroyConnection();
+        });
+    }
+    getUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const token = req.headers.authorization || req.headers.Authorization;
+            try {
+                const result = yield UserController.UserBusiness.getUsers(token);
+            }
+            catch (err) {
+                res.status(err.errorCode || 400).send({ message: err.message });
+            }
+            yield BaseDatabase_1.BaseDatabase.destroyConnection();
         });
     }
 }

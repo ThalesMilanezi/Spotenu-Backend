@@ -33,4 +33,11 @@ export class MusicDatabase extends BaseDatabase {
     return this.toModel(result[0])
   }
 
+  public async deleteMusic(id: string): Promise<void> {
+    const result = await this.getConnection()
+    .delete()
+    .from(MusicDatabase.TABLE_NAME)
+    .where({id})
+  }
+
 }

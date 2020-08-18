@@ -6,6 +6,7 @@ import { InvalidParameterError } from "../errors/InvalidParameters";
 import { Unauthorized } from "../errors/Unauthorized";
 import { User, stringToUserRole, UserRole } from "../model/User";
 import { Forbidden } from "../errors/Forbidden";
+import { Sucess } from "../errors/Sucess";
 
 
 export class UserBusiness {
@@ -91,7 +92,12 @@ export class UserBusiness {
     password: string,
     description: string
   ) {
-    if (!name || !email || !nickname || !password || !description) {
+    if (name === undefined ||
+      email === undefined ||
+      nickname === undefined ||
+      password === undefined ||
+      description === undefined
+    ) {
       throw new InvalidParameterError("Missing inputs, check the requireds inputs and try again!")
     }
 
@@ -107,37 +113,34 @@ export class UserBusiness {
     const id = this.idGenerator.generate();
     const cryptedPassword = await this.hashGenerator.hash(password)
 
-    const newBand = new User(id, name, email, nickname, cryptedPassword, stringToUserRole(role), false, description)
+    const newBand = new User(id, name, email, nickname, cryptedPassword, role, description)
     await this.userDataBase.createBand(newBand)
-
-
-    // if (!isApproved) {
-    //   throw new Forbidden("Your band is not approved yet, check again later")
-    // } else {
-    //   return { acessToken }
-    // }
+    
+    if (newBand.getisApproved() === undefined) {
+      throw new Sucess("Sua Banda foi criada com sucesso, no entanto é necessário esperar a aprovação dos administradores")
+    } 
   }
 
   public async login(userInput: string, password: string) {
-
+    
     if (!userInput || !password) {
       throw new InvalidParameterError("Missing inputs, check the requireds inputs and try again!")
     }
-
+    
     let user
-
+    
     if (userInput.indexOf("@") !== -1) {
-      user = await this.userDataBase.getUserByNickname(userInput)
-    } else {
       user = await this.userDataBase.getUserByEmail(userInput)
+    } else {
+      user = await this.userDataBase.getUserByNickname(userInput)
     }
-
+    
     if (!user) {
       throw new Error("This user is not found in our site, try again")
     }
 
     const correctPassword = await this.hashGenerator.compareHash(password, user.getPassword())
-
+    
     if (!correctPassword) {
       throw new Unauthorized("Some credencials are incorrect")
     }
@@ -145,7 +148,6 @@ export class UserBusiness {
       id: user.getId(),
       role: user.getRole()
     })
-
     return { acessToken }
   }
 

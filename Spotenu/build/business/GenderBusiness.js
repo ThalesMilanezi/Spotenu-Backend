@@ -38,7 +38,7 @@ class GenderBusiness {
             if ((user === null || user === void 0 ? void 0 : user.getRole()) !== "ADMIN") {
                 throw new Unauthorized_1.Unauthorized("You must be a adminstrator of this page to access this create a gender");
             }
-            yield this.genderDataBase.getGenderByName(name);
+            return yield this.genderDataBase.getGenderByName(name);
         });
     }
     getAllGender(token) {
@@ -48,7 +48,7 @@ class GenderBusiness {
             if ((user === null || user === void 0 ? void 0 : user.getRole()) !== "ADMIN") {
                 throw new Unauthorized_1.Unauthorized("You must be a adminstrator of this page to access this create a gender");
             }
-            yield this.genderDataBase.getAllGender();
+            return yield this.genderDataBase.getAllGender();
         });
     }
 }

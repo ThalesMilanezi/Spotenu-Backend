@@ -19,7 +19,7 @@ export class MusicController {
     try {
       const token = req.headers.authorization || req.headers.Authorization as any
       const result = await MusicController.musicBusiness.createMusic(req.body.name, req.body.albumId, token)
-      res.status(200).send({message: "Musica criada com sucesso!"})
+      res.status(200).send({ message: "Musica criada com sucesso!" })
     } catch (err) {
       res.status(err.erroCode || 400).send({
         message: err.message
@@ -39,5 +39,17 @@ export class MusicController {
       })
     }
     await BaseDatabase.destroyConnection()
+  }
+
+  public async deleteMusic(req: Request, res: Response) {
+    try {
+      const token = req.headers.authorization || req.headers.Authorization as any
+      const result = await MusicController.musicBusiness.deleteMusic(req.body.id, token)
+    res.status(200).send(result)
+    } catch (err) {
+      res.status(err.erroCode || 400).send({
+        message: err.message
+      })
+    }
   }
 }
