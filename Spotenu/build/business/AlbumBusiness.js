@@ -39,7 +39,7 @@ class AlbumBusiness {
             if ((user === null || user === void 0 ? void 0 : user.getRole()) !== "ADMIN" && (user === null || user === void 0 ? void 0 : user.getRole()) !== "BAND") {
                 throw new Unauthorized_1.Unauthorized("You can't search any album!");
             }
-            yield this.albumDatabase.getAlbumById(id);
+            return yield this.albumDatabase.getAlbumById(id);
         });
     }
 }

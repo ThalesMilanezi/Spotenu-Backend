@@ -45,8 +45,8 @@ export class UserController {
     try {
       const result = await UserController.UserBusiness.signupBand(
         req.body.name, req.body.email, req.body.nickname, req.body.password, req.body.description
-        );
-        res.status(200).send(result)
+      );
+      res.status(200).send(result)
     } catch (err) {
       res.status(err.erroCode || 400).send({ message: err.message })
     }
@@ -57,10 +57,10 @@ export class UserController {
   public async login(req: Request, res: Response) {
     try {
       let result
-      if (req.body.email) {
-        result = await UserController.UserBusiness.login(req.body.email, req.body.password)
-      } if (req.body.nickname) {
-        result = await UserController.UserBusiness.login(req.body.nickname, req.body.password)
+      if (req.body.userInput.indexOf("@") !== -1) {
+        result = await UserController.UserBusiness.login(req.body.userInput, req.body.password)
+      } if (req.body.userInput) {
+        result = await UserController.UserBusiness.login(req.body.userInput, req.body.password)
       }
       res.status(200).send(result)
     } catch (err) {

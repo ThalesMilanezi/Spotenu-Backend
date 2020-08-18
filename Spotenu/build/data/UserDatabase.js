@@ -15,7 +15,7 @@ const User_1 = require("../model/User");
 class UserDatabase extends BaseDatabase_1.BaseDatabase {
     toModel(dbModel) {
         return (dbModel &&
-            new User_1.User(dbModel.id, dbModel.name, dbModel.email, dbModel.nickname, dbModel.password, dbModel.role, dbModel.description));
+            new User_1.User(dbModel.id, dbModel.name, dbModel.email, dbModel.nickname, dbModel.password, dbModel.role, dbModel.is_approved, dbModel.description));
     }
     createUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -41,8 +41,8 @@ class UserDatabase extends BaseDatabase_1.BaseDatabase {
                 nickname: user.getNickname(),
                 password: user.getPassword(),
                 role: user.getRole(),
-                is_approved: user.getisApproved(),
-                description: user.getDescription()
+                description: user.getDescription(),
+                is_approved: user.getisApproved()
             })
                 .into(UserDatabase.TABLE_NAME);
         });
@@ -88,7 +88,7 @@ class UserDatabase extends BaseDatabase_1.BaseDatabase {
             const result = yield this.getConnection().raw(`
     SELECT * FROM ${UserDatabase.TABLE_NAME} WHERE role = "BAND"
     `);
-            return result[0].filter((item) => this.toModel(item));
+            return result[0].map((item) => this.toModel(item));
         });
     }
 }

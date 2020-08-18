@@ -5,6 +5,7 @@ import { IdGenerator } from "../services/idGenerator";
 import { TokenGenerator } from "../services/tokenGenerator";
 import { Unauthorized } from "../errors/Unauthorized";
 import { Music } from "../model/Music";
+import { NotFoundError } from "../errors/NotFoundError";
 
 export class MusicBusiness {
   constructor(
@@ -37,10 +38,24 @@ export class MusicBusiness {
 
     const verifyUser = this.tokenGenerator.verify(token)
     const user = await this.userDatabase.getUserById(verifyUser.id)
+    if(!user){
+      throw new NotFoundError("This user does not exist")
+    }
 
-    if (user?.getRole() !== "ADMIN" && user?.getRole() !== "BAND") {
+    if (user.getRole() !== "ADMIN" && user.getRole() !== "BAND") {
       throw new Unauthorized("You can't create a new music!")
     }
     await this.musicDatabase.getMusicById(id)
+  }
+
+  public async deleteMusic(id:string, token:string) {
+    const verifyUser = this.tokenGenerator.verify(token)
+    const user = await this.userDatabase.getUserById(verifyUser.id)
+
+    if(!user){
+      throw new NotFoundError("This user does not exist")
+    }
+
+    await this.musicDatabase.deleteMusic(id)
   }
 }

@@ -13,3 +13,4 @@ exports.userRouter.post("/admin", new UserController_1.UserController().signUpAd
 exports.userRouter.post("/login", new UserController_1.UserController().login);
 exports.userRouter.get("/band/all", new UserController_1.UserController().getAllBands);
 exports.userRouter.post("/approvebands", new UserController_1.UserController().ApproveBand);
+exports.userRouter.get("/profile", new UserController_1.UserController().getUser);

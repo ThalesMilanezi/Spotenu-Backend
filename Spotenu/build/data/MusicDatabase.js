@@ -24,8 +24,7 @@ class MusicDatabase extends BaseDatabase_1.BaseDatabase {
                 id: music.getId(),
                 name: music.getName(),
                 album_id: music.getAlbum()
-            })
-                .into(MusicDatabase.TABLE_NAME);
+            }).into(MusicDatabase.TABLE_NAME);
         });
     }
     getMusicById(id) {
@@ -39,3 +38,4 @@ class MusicDatabase extends BaseDatabase_1.BaseDatabase {
     }
 }
 exports.MusicDatabase = MusicDatabase;
+MusicDatabase.TABLE_NAME = "MusicSpotenu";
