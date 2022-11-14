@@ -19,8 +19,12 @@ export class MusicBusiness {
   public async createMusic(name:string,albumId:string, token: string){
     const verifyUser = this.tokenGenerator.verify(token)
     const user = await this.userDatabase.getUserById(verifyUser.id)
+    
+    if(!user){
+      throw new Error('User not found in database')
+    }
 
-    if (user?.getRole() !== "ADMIN" && user?.getRole() !== "BAND") {
+    if (user.getRole() !== "ADMIN" && user.getRole() !== "BAND") {
       throw new Unauthorized("You can't create a new music!")
     }
 

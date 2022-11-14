@@ -17,7 +17,11 @@ export class GenderBusiness {
     const verifyUser = this.tokengenerator.verify(token)
     const user = await this.userDatabase.getUserById(verifyUser.id)
 
-    if (user?.getRole() !== "ADMIN") {
+    if(!user){
+      throw new Error('User not found in database')
+    }
+
+    if (user.getRole() !== "ADMIN") {
       throw new Unauthorized("You must be a adminstrator of this page to access this create a gender")
     }
     const idGender = this.idGenerator.generate()
@@ -29,7 +33,11 @@ export class GenderBusiness {
     const verifyUser = this.tokengenerator.verify(token)
     const user = await this.userDatabase.getUserById(verifyUser.id)
 
-    if (user?.getRole() !== "ADMIN") {
+    if(!user){
+      throw new Error('User not found in database')
+    }
+
+    if (user.getRole() !== "ADMIN") {
       throw new Unauthorized("You must be a adminstrator of this page to access this create a gender")
     }
     return await this.genderDataBase.getGenderByName(name)
@@ -39,7 +47,11 @@ export class GenderBusiness {
     const verifyUser = this.tokengenerator.verify(token)
     const user = await this.userDatabase.getUserById(verifyUser.id)
 
-    if (user?.getRole() !== "ADMIN") {
+    if(!user){
+      throw new Error('User not found in database')
+    }
+
+    if (user.getRole() !== "ADMIN") {
       throw new Unauthorized("You must be a adminstrator of this page to access this create a gender")
     }
     return await this.genderDataBase.getAllGender()

@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const UserDatabase_1 = require("../data/UserDatabase");
@@ -18,98 +9,98 @@ const UserBusiness_1 = require("../business/UserBusiness");
 const BaseDatabase_1 = require("../data/BaseDatabase");
 const User_1 = require("../model/User");
 class UserController {
-    signUpListener(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const result = yield UserController.UserBusiness.signupListener(req.body.name, req.body.email, req.body.nickname, req.body.password, User_1.UserRole.FREE);
-                res.status(200).send(result);
+    static UserBusiness = new UserBusiness_1.UserBusiness(new UserDatabase_1.UserDatabase(), new hashGenerator_1.HashGenerator(), new tokenGenerator_1.TokenGenerator(), new idGenerator_1.IdGenerator());
+    async signUpListener(req, res) {
+        try {
+            const result = await UserController.UserBusiness.signupListener(req.body.name, req.body.email, req.body.nickname, req.body.password, User_1.UserRole.FREE);
+            res.status(200).send(result);
+        }
+        catch (err) {
+            if (err instanceof Error) {
+                res.status(400).send({ message: err.message });
             }
-            catch (err) {
-                res.status(err.erroCode || 400).send({ message: err.message });
-            }
-            yield BaseDatabase_1.BaseDatabase.destroyConnection();
-        });
+        }
+        await BaseDatabase_1.BaseDatabase.destroyConnection();
     }
-    signUpAdmin(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const result = yield UserController.UserBusiness.signupAdmin(req.body.name, req.body.email, req.body.nickname, req.body.password, User_1.UserRole.ADMIN);
-                res.status(200).send(result);
+    async signUpAdmin(req, res) {
+        try {
+            const result = await UserController.UserBusiness.signupAdmin(req.body.name, req.body.email, req.body.nickname, req.body.password, User_1.UserRole.ADMIN);
+            res.status(200).send(result);
+        }
+        catch (err) {
+            if (err instanceof Error) {
+                res.status(400).send({ message: err.message });
             }
-            catch (err) {
-                res.status(err.erroCode || 400).send({ message: err.message });
-            }
-            yield BaseDatabase_1.BaseDatabase.destroyConnection();
-        });
+        }
+        await BaseDatabase_1.BaseDatabase.destroyConnection();
     }
-    signUpBand(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const result = yield UserController.UserBusiness.signupBand(req.body.name, req.body.email, req.body.nickname, req.body.password, req.body.description);
-                res.status(200).send(result);
+    async signUpBand(req, res) {
+        try {
+            const result = await UserController.UserBusiness.signupBand(req.body.name, req.body.email, req.body.nickname, req.body.password, req.body.description);
+            res.status(200).send(result);
+        }
+        catch (err) {
+            if (err instanceof Error) {
+                res.status(400).send({ message: err.message });
             }
-            catch (err) {
-                res.status(err.erroCode || 400).send({ message: err.message });
-            }
-            yield BaseDatabase_1.BaseDatabase.destroyConnection();
-        });
+        }
+        await BaseDatabase_1.BaseDatabase.destroyConnection();
     }
-    login(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                let result;
-                if (req.body.email) {
-                    result = yield UserController.UserBusiness.login(req.body.email, req.body.password);
-                }
-                if (req.body.nickname) {
-                    result = yield UserController.UserBusiness.login(req.body.nickname, req.body.password);
-                }
-                res.status(200).send(result);
+    async login(req, res) {
+        try {
+            let result;
+            if (req.body.userInput.indexOf("@") !== -1) {
+                result = await UserController.UserBusiness.login(req.body.userInput, req.body.password);
             }
-            catch (err) {
-                res.status(err.erroCode || 400).send({ message: err.message });
+            if (req.body.userInput) {
+                result = await UserController.UserBusiness.login(req.body.userInput, req.body.password);
             }
-            yield BaseDatabase_1.BaseDatabase.destroyConnection();
-        });
+            res.status(200).send(result);
+        }
+        catch (err) {
+            if (err instanceof Error) {
+                res.status(400).send({ message: err.message });
+            }
+        }
+        await BaseDatabase_1.BaseDatabase.destroyConnection();
     }
-    getAllBands(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const token = req.headers.authorization || req.headers.Authorization;
-            try {
-                const result = yield UserController.UserBusiness.getAllBands(token);
-                res.status(200).send(result);
+    async getAllBands(req, res) {
+        const token = req.headers.authorization || req.headers.Authorization;
+        try {
+            const result = await UserController.UserBusiness.getAllBands(token);
+            res.status(200).send(result);
+        }
+        catch (err) {
+            if (err instanceof Error) {
+                res.status(400).send({ message: err.message });
             }
-            catch (err) {
-                res.status(err.errorCode || 400).send({ message: err.message });
-            }
-            yield BaseDatabase_1.BaseDatabase.destroyConnection();
-        });
+        }
+        await BaseDatabase_1.BaseDatabase.destroyConnection();
     }
-    ApproveBand(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const token = req.headers.authorization || req.headers.Authorization;
-            try {
-                const result = yield UserController.UserBusiness.ApproveBand(req.body.id, token);
-                res.status(200).send({ message: "banda aprovada com sucesso" });
+    async ApproveBand(req, res) {
+        const token = req.headers.authorization || req.headers.Authorization;
+        try {
+            const result = await UserController.UserBusiness.ApproveBand(req.body.id, token);
+            res.status(200).send({ message: "banda aprovada com sucesso" });
+        }
+        catch (err) {
+            if (err instanceof Error) {
+                res.status(400).send({ message: err.message });
             }
-            catch (err) {
-                res.status(err.errorCode || 400).send({ message: err.message });
-            }
-            yield BaseDatabase_1.BaseDatabase.destroyConnection();
-        });
+        }
+        await BaseDatabase_1.BaseDatabase.destroyConnection();
     }
-    getUser(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const token = req.headers.authorization || req.headers.Authorization;
-            try {
-                const result = yield UserController.UserBusiness.getUsers(token);
+    async getUser(req, res) {
+        const token = req.headers.authorization || req.headers.Authorization;
+        try {
+            const result = await UserController.UserBusiness.getUsers(token);
+        }
+        catch (err) {
+            if (err instanceof Error) {
+                res.status(400).send({ message: err.message });
             }
-            catch (err) {
-                res.status(err.errorCode || 400).send({ message: err.message });
-            }
-            yield BaseDatabase_1.BaseDatabase.destroyConnection();
-        });
+        }
+        await BaseDatabase_1.BaseDatabase.destroyConnection();
     }
 }
 exports.UserController = UserController;
-UserController.UserBusiness = new UserBusiness_1.UserBusiness(new UserDatabase_1.UserDatabase(), new hashGenerator_1.HashGenerator(), new tokenGenerator_1.TokenGenerator(), new idGenerator_1.IdGenerator());

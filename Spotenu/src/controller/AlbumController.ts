@@ -20,9 +20,9 @@ export class AlbumController {
       const result = await AlbumController.AlbumBusiness.createAlbum(req.body.name, token)
       res.status(200).send({message: "Album criado com sucesso!"})
     } catch (err) {
-      res.status(err.erroCode || 400).send({
-        message: err.message
-      })
+      if(err instanceof Error){
+        res.status(400).send({ message: err.message })
+      }
     }
     await BaseDatabase.destroyConnection()
   }
@@ -33,9 +33,9 @@ export class AlbumController {
       const result = await AlbumController.AlbumBusiness.getAlbumById(req.body.id, token)
       res.status(200).send(result)
     } catch (err) {
-      res.status(err.erroCode || 400).send({
-        message: err.message
-      })
+      if(err instanceof Error){
+        res.status(400).send({ message: err.message })
+      }
     }
     await BaseDatabase.destroyConnection()
   }

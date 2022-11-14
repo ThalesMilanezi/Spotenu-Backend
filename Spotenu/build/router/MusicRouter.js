@@ -9,3 +9,4 @@ const MusicController_1 = require("../controller/MusicController");
 exports.musicRouter = express_1.default.Router();
 exports.musicRouter.post("/create", new MusicController_1.MusicController().createMusic);
 exports.musicRouter.get("/search", new MusicController_1.MusicController().getMusicById);
+exports.musicRouter.delete("/delete", new MusicController_1.MusicController().deleteMusic);

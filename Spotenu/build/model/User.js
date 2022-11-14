@@ -3,6 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.stringToUserRole = exports.UserRole = exports.User = void 0;
 const NotFoundError_1 = require("../errors/NotFoundError");
 class User {
+    id;
+    name;
+    email;
+    nickname;
+    password;
+    role;
+    description;
+    isApproved;
     constructor(id, name, email, nickname, password, role, description, isApproved) {
         this.id = id;
         this.name = name;
@@ -46,7 +54,7 @@ var UserRole;
     UserRole["ADMIN"] = "ADMIN";
     UserRole["BAND"] = "BAND";
 })(UserRole = exports.UserRole || (exports.UserRole = {}));
-exports.stringToUserRole = (input) => {
+const stringToUserRole = (input) => {
     switch (input) {
         case "FREE":
             return UserRole.FREE;
@@ -60,3 +68,4 @@ exports.stringToUserRole = (input) => {
             throw new NotFoundError_1.NotFoundError("The specific user role was not found.");
     }
 };
+exports.stringToUserRole = stringToUserRole;

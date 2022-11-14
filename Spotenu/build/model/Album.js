@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Album = void 0;
 class Album {
+    id;
+    name;
+    band;
     constructor(id, name, band) {
         this.id = id;
         this.name = name;

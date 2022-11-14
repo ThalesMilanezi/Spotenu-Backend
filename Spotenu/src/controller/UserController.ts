@@ -22,7 +22,9 @@ export class UserController {
       );
       res.status(200).send(result)
     } catch (err) {
-      res.status(err.erroCode || 400).send({ message: err.message })
+      if(err instanceof Error){
+        res.status(400).send({ message: err.message })
+      }
     }
     await BaseDatabase.destroyConnection()
 
@@ -35,8 +37,9 @@ export class UserController {
       );
       res.status(200).send(result)
     } catch (err) {
-      res.status(err.erroCode || 400).send({ message: err.message })
-    }
+      if(err instanceof Error){
+        res.status(400).send({ message: err.message })
+      }    }
     await BaseDatabase.destroyConnection()
 
   }
@@ -48,7 +51,9 @@ export class UserController {
       );
       res.status(200).send(result)
     } catch (err) {
-      res.status(err.erroCode || 400).send({ message: err.message })
+      if(err instanceof Error){
+        res.status(400).send({ message: err.message })
+      }    
     }
     await BaseDatabase.destroyConnection()
 
@@ -64,7 +69,9 @@ export class UserController {
       }
       res.status(200).send(result)
     } catch (err) {
-      res.status(err.erroCode || 400).send({ message: err.message })
+      if(err instanceof Error){
+        res.status(400).send({ message: err.message })
+      }    
     }
     await BaseDatabase.destroyConnection()
 
@@ -77,7 +84,9 @@ export class UserController {
       const result = await UserController.UserBusiness.getAllBands(token)
       res.status(200).send(result)
     } catch (err) {
-      res.status(err.errorCode || 400).send({ message: err.message })
+      if(err instanceof Error){
+        res.status(400).send({ message: err.message })
+      }    
     }
     await BaseDatabase.destroyConnection()
   }
@@ -88,7 +97,9 @@ export class UserController {
       const result = await UserController.UserBusiness.ApproveBand(req.body.id, token)
       res.status(200).send({ message: "banda aprovada com sucesso" })
     } catch (err) {
-      res.status(err.errorCode || 400).send({ message: err.message })
+      if(err instanceof Error){
+        res.status(400).send({ message: err.message })
+      }
     }
     await BaseDatabase.destroyConnection()
   }
@@ -98,7 +109,9 @@ export class UserController {
     try {
       const result = await UserController.UserBusiness.getUsers(token)
     } catch (err) {
-      res.status(err.errorCode || 400).send({ message: err.message })
+      if(err instanceof Error){
+        res.status(400).send({ message: err.message })
+      }
     }
     await BaseDatabase.destroyConnection()
   }

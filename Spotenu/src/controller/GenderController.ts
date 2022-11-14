@@ -20,9 +20,9 @@ export class GenderController {
       const result = await GenderController.GenderBusiness.createGender(req.body.name, token)
       res.status(200).send({message: "Parabens, genero criado com sucesso!"})
     } catch (err) {
-      res.status(err.erroCode || 400).send({
-        message: err.message
-      })
+      if(err instanceof Error){
+        res.status(400).send({ message: err.message })
+      }
     }
     await BaseDatabase.destroyConnection()
   }
@@ -33,9 +33,9 @@ export class GenderController {
       const result = await GenderController.GenderBusiness.getGenderByName(req.body.name, token)
       res.status(200).send(result)
     } catch (err) {
-      res.status(err.erroCode || 400).send({
-        message: err.message
-      })
+      if(err instanceof Error){
+        res.status(400).send({ message: err.message })
+      }
     }
     await BaseDatabase.destroyConnection()
   }
@@ -46,9 +46,9 @@ export class GenderController {
       const result = await GenderController.GenderBusiness.getAllGender(token)
       res.status(200).send(result)
     } catch (err) {
-      res.status(err.erroCode || 400).send({
-        message: err.message
-      })
+      if(err instanceof Error){
+        res.status(400).send({ message: err.message })
+      }
     }
     await BaseDatabase.destroyConnection()
   }

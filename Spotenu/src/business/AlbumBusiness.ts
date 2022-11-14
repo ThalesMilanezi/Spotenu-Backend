@@ -17,7 +17,11 @@ export class AlbumBusiness {
     const verifyUser = this.tokenGenerator.verify(token)
     const user = await this.userDatabase.getUserById(verifyUser.id)
 
-    if (user?.getRole() !== "ADMIN" && user?.getRole() !== "BAND") {
+    if(!user){
+      throw new Error('User not found in database')
+    }
+
+    if (user.getRole() !== "ADMIN" && user.getRole() !== "BAND") {
       throw new Unauthorized("You can't create a new album!")
     }
     const idAlbum = this.idGenerator.generate()
@@ -31,7 +35,11 @@ export class AlbumBusiness {
     const verifyUser = this.tokenGenerator.verify(token)
     const user = await this.userDatabase.getUserById(verifyUser.id)
 
-    if (user?.getRole() !== "ADMIN" && user?.getRole() !== "BAND") {
+    if(!user){
+      throw new Error('User not found in database')
+    }
+
+    if (user.getRole() !== "ADMIN" && user.getRole() !== "BAND") {
       throw new Unauthorized("You can't search any album!")
     }
     return await this.albumDatabase.getAlbumById(id)

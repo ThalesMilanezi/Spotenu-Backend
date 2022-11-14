@@ -153,8 +153,8 @@ export class UserBusiness {
 
   public async ApproveBand(id: string, token: string) {
     const verifyUser = this.tokenGenerator.verify(token)
-    const user = await this.userDataBase.getUserById(verifyUser.id)
-    const band = await this.userDataBase.getUserById(id)
+    await this.userDataBase.getUserById(verifyUser.id)
+    await this.userDataBase.getUserById(id)
     await this.userDataBase.approveBand(id as any)
 
   }
@@ -163,7 +163,11 @@ export class UserBusiness {
     const verifyUser = this.tokenGenerator.verify(token)
     const user = await this.userDataBase.getUserById(verifyUser.id)
 
-    if (user?.getRole() !== "ADMIN") {
+    if(!user){
+      throw new Error('User not found in database')
+    }
+
+    if (user.getRole() !== "ADMIN") {
       throw new Unauthorized("You must be admin to see all bands")
     }
 

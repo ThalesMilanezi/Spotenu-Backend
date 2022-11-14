@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Music = void 0;
 class Music {
+    id;
+    name;
+    albumId;
     constructor(id, name, albumId) {
         this.id = id;
         this.name = name;

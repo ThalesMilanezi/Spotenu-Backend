@@ -6,4 +6,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.handler = void 0;
 const index_1 = __importDefault(require("./index"));
 const serverless_http_1 = __importDefault(require("serverless-http"));
-exports.handler = serverless_http_1.default(index_1.default);
+exports.handler = (0, serverless_http_1.default)(index_1.default);

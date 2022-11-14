@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BaseError = void 0;
 class BaseError extends Error {
+    errorCode;
     constructor(message, errorCode) {
         super(message);
         this.errorCode = errorCode;

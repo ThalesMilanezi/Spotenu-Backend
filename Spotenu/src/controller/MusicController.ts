@@ -21,9 +21,9 @@ export class MusicController {
       const result = await MusicController.musicBusiness.createMusic(req.body.name, req.body.albumId, token)
       res.status(200).send({ message: "Musica criada com sucesso!" })
     } catch (err) {
-      res.status(err.erroCode || 400).send({
-        message: err.message
-      })
+      if(err instanceof Error){
+        res.status(400).send({ message: err.message })
+      }
     }
     await BaseDatabase.destroyConnection()
   }
@@ -34,9 +34,9 @@ export class MusicController {
       const result = await MusicController.musicBusiness.getMusicById(req.params.id, token)
       res.status(200).send(result)
     } catch (err) {
-      res.status(err.erroCode || 400).send({
-        message: err.message
-      })
+      if(err instanceof Error){
+        res.status(400).send({ message: err.message })
+      }
     }
     await BaseDatabase.destroyConnection()
   }
@@ -47,9 +47,9 @@ export class MusicController {
       const result = await MusicController.musicBusiness.deleteMusic(req.body.id, token)
     res.status(200).send(result)
     } catch (err) {
-      res.status(err.erroCode || 400).send({
-        message: err.message
-      })
+      if(err instanceof Error){
+        res.status(400).send({ message: err.message })
+      }
     }
   }
 }

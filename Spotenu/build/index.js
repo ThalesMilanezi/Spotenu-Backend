@@ -13,8 +13,8 @@ const MusicRouter_1 = require("./router/MusicRouter");
 if (process.env.NODE_ENV !== "serverless") {
     dotenv_1.default.config();
 }
-const app = express_1.default();
-app.use(cors_1.default({
+const app = (0, express_1.default)();
+app.use((0, cors_1.default)({
     origin: true
 }));
 app.use(express_1.default.json());
