@@ -33,7 +33,7 @@
     "knex": "^0.21.1",
     "lbn-lambda-express": "^0.1.10",
     "mysql": "^2.18.1",
-    "serverless": "^1.74.1",
+    "serverless": "^3.25.1",
     "serverless-http": "^2.5.0",
     "typescript": "^3.9.2",
     "uuid": "^8.0.0"
